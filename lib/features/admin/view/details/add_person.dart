@@ -13,8 +13,9 @@ import '../../cubit/cubit.dart';
 import '../../cubit/states.dart';
 
 class AddPerson extends StatelessWidget {
-  const AddPerson({super.key});
+  const AddPerson({super.key, required this.userOrAdmin});
 
+  final String userOrAdmin;
   static GlobalKey<FormState> formKey = GlobalKey<FormState>();
   static TextEditingController userNameController = TextEditingController();
   static TextEditingController phoneController = TextEditingController();
@@ -133,7 +134,7 @@ class AddPerson extends StatelessWidget {
                                               name: userNameController.text.trim(),
                                               phone: phoneController.text.trim(),
                                               password: passwordController.text.trim(),
-                                              role: 'user',
+                                              role: userOrAdmin,
                                               context: context,
                                             );
                                           }else{
@@ -176,7 +177,7 @@ class AddPerson extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  fallback: (c)=> CircularProgressIndicator(color: primaryColor,),
+                                  fallback: (c)=> CircularProgressIndicator(color: Colors.white,),
                                 ),
                                 const SizedBox(height: 40),
                               ],

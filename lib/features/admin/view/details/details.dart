@@ -163,7 +163,7 @@ class Details extends StatelessWidget {
                               const SizedBox(height: 20),
                               GestureDetector(
                                 onTap: (){
-                                  navigateTo(context, AddPerson());
+                                  navigateTo(context, AddPerson(userOrAdmin: 'user',));
                                 },
                                 child: Container(
                                   width: double.infinity,
@@ -178,6 +178,28 @@ class Details extends StatelessWidget {
                                   ),
                                   child: Center(
                                     child: Text('اضافة مستخدم',
+                                      style: TextStyle(color: Colors.white,fontSize: 16 ),),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              GestureDetector(
+                                onTap: (){
+                                  navigateTo(context, AddPerson(userOrAdmin: 'admin',));
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius:  BorderRadius.circular(12),
+                                      color: primaryColor
+                                  ),
+                                  child: Center(
+                                    child: Text('اضافة ادمن',
                                       style: TextStyle(color: Colors.white,fontSize: 16 ),),
                                   ),
                                 ),

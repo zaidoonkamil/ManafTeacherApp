@@ -407,13 +407,33 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+
   List<User> user = [];
   Pagination2? pagination2;
   int currentPage1 = 1;
   bool isLastPage1 = false;
+  bool isLoading = false;
   GetNameUser? getNameUserModel;
-  void getNameUser({required BuildContext? context,required String page}) {
+  final ScrollController scrollController = ScrollController();
+  void initScrollController(BuildContext context) {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (!isLastPage1 && !isLoading) {
+          getNameUser(
+            context: context,
+            page: (currentPage1 + 1).toString(),
+          );
+        }
+      }
+    });
+  }
+  void getNameUser({required BuildContext? context, required String page}) {
+    if (isLoading || isLastPage1) return;
+
+    isLoading = true;
     emit(GetNameUserLoadingState());
+
     DioHelper.getData(
       url: '/users?page=$page',
     ).then((value) {
@@ -424,14 +444,17 @@ class AdminCubit extends Cubit<AdminStates> {
       if (currentPage1 >= pagination2!.totalPages) {
         isLastPage1 = true;
       }
+      isLoading = false;
       emit(GetNameUserSuccessState());
     }).catchError((error) {
+      isLoading = false;
       if (error is DioError) {
-        showToastError(text: error.toString(),
-          context: context!,);
-        print(error.toString());
+        showToastError(
+          text: error.toString(),
+          context: context!,
+        );
         emit(GetNameUserErrorState());
-      }else {
+      } else {
         print("Unknown Error: $error");
       }
     });

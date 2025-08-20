@@ -239,14 +239,14 @@ class AdminCubit extends Cubit<AdminStates> {
   }
 
 
-  List<GetLessons> getLessonsModel = [];
+  List<GetLessonsAdmin> getLessonsModelAdmin = [];
   void getLessons({required BuildContext context}) {
     emit(GetLessonsLoadingState());
     DioHelper.getData(
       url: '/lessons/1',
     ).then((value) {
-      getLessonsModel = (value.data as List)
-          .map((item) => GetLessons.fromJson
+      getLessonsModelAdmin = (value.data as List)
+          .map((item) => GetLessonsAdmin.fromJson
         (item as Map<String, dynamic>)).toList();
       emit(GetLessonsSuccessState());
     }).catchError((error) {
@@ -314,7 +314,7 @@ class AdminCubit extends Cubit<AdminStates> {
     DioHelper.deleteData(
       url: '/lessons/$id',
     ).then((value) {
-      getLessonsModel.removeWhere((getAdsModel) => getAdsModel.id.toString() == id);
+      getLessonsModelAdmin.removeWhere((getAdsModel) => getAdsModel.id.toString() == id);
       showToastSuccess(
         text: 'تم الحذف بنجاح',
         context: context,
@@ -722,10 +722,10 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
-  void updateLock({required BuildContext context, required bool isLocked, required String id}) {
+  void updateLock({required BuildContext context, required bool isLocked, required String lessonsId, required String userId}) {
     emit(UpdateLockLoadingState());
     DioHelper.patchData(
-      url: '/lessons/$id/lock',
+      url: '/lessons/$lessonsId/lock-user/$userId',
       data: {
         'isLocked': isLocked,
       },
@@ -766,6 +766,25 @@ class AdminCubit extends Cubit<AdminStates> {
       emit(GetVideosErrorState());
     });
   }
+
+  GetLessons? getLessonsModel;
+  void getLessonsUserLock({required BuildContext context,required String userId}) {
+    emit(GetLessonsLoadingState());
+    DioHelper.getData(
+      url: '/users/$userId/lessons-status',
+    ).then((value) {
+      getLessonsModel = GetLessons.fromJson(value.data);
+      emit(GetLessonsSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToastError(text: error.toString(), context: context,);
+        emit(GetLessonsErrorState());
+      }else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
 
 }
 

@@ -192,15 +192,13 @@ class UserCubit extends Cubit<UserStates> {
   }
 
 
-  List<GetLessons> getLessonsModel = [];
+  GetLessons? getLessonsModel;
   void getLessons({required BuildContext context}) {
     emit(GetLessonsLoadingState());
     DioHelper.getData(
-      url: '/lessons/1',
+      url: '/users/$id/lessons-status',
     ).then((value) {
-      getLessonsModel = (value.data as List)
-          .map((item) => GetLessons.fromJson
-        (item as Map<String, dynamic>)).toList();
+      getLessonsModel = GetLessons.fromJson(value.data);
       emit(GetLessonsSuccessState());
     }).catchError((error) {
       if (error is DioError) {

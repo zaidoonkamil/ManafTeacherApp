@@ -241,18 +241,18 @@ class HomeUser extends StatelessWidget {
                                 ),
                                 SizedBox(height: 18,),
                                 ConditionalBuilder(
-                                    condition: cubit.getLessonsModel.isNotEmpty,
+                                    condition: cubit.getLessonsModel != null,
                                     builder: (c){
                                   return SizedBox(
                                     height: 250,
                                     child: ListView.builder(
                                       reverse: true,
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: cubit.getLessonsModel.length,
+                                      itemCount: cubit.getLessonsModel!.unlockedLessons.length,
                                       itemBuilder: (context, index) {
-                                        final lesson = cubit.getLessonsModel[index];
-                                        return lesson.isLocked == false?
-                                        Padding(
+                                        final lesson = cubit.getLessonsModel!.unlockedLessons[index];
+                                       return cubit.getLessonsModel!.unlockedLessons[index].isLocked == false?
+                                       Padding(
                                           padding: const EdgeInsets.only(right: 10.0),
                                           child: GestureDetector(
                                             onTap: () {

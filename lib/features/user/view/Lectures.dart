@@ -50,12 +50,12 @@ class Lectures extends StatelessWidget {
                                 condition: state is !GetLessonsLoadingState,
                                 builder: (c){
                                   return ConditionalBuilder(
-                                      condition: cubit.getLessonsModel.isNotEmpty,
+                                      condition: cubit.getLessonsModel != null,
                                       builder: (c){
                                         return ListView.builder(
-                                            itemCount: cubit.getLessonsModel.length,
+                                            itemCount: cubit.getLessonsModel!.unlockedLessons.length,
                                             itemBuilder: (context,index){
-                                              DateTime dateTime = DateTime.parse(cubit.getLessonsModel[index].createdAt.toString());
+                                              DateTime dateTime = DateTime.parse(cubit.getLessonsModel!.unlockedLessons[index].createdAt.toString());
                                               String formattedDate = DateFormat('yyyy/M/d').format(dateTime);
                                               return TweenAnimationBuilder(
                                                 duration: Duration(milliseconds: 500 + (index * 50)),
@@ -71,17 +71,17 @@ class Lectures extends StatelessWidget {
                                                     ),
                                                   );
                                                 },
-                                                child: GestureDetector(
+                                                child:cubit.getLessonsModel!.unlockedLessons[index].isLocked == false? GestureDetector(
                                                   onTap: () {
                                                     navigateTo(context,
                                                     Lessons(
-                                                    videoUrl: cubit.getLessonsModel[index].videoUrl,
-                                                                                              title: cubit.getLessonsModel[index].title,
-                                                                                              description: cubit.getLessonsModel[index].description,
-                                                                                              pdfUrl: cubit.getLessonsModel[index].pdfUrl,
-                                                                                              images: '$url/uploads/${cubit.getLessonsModel[index].images[0]}',
-                                                                                              ),
-                                                                                              );
+                                                    videoUrl: cubit.getLessonsModel!.unlockedLessons[index].videoUrl,
+                                                      title: cubit.getLessonsModel!.unlockedLessons[index].title,
+                                                      description: cubit.getLessonsModel!.unlockedLessons[index].description,
+                                                      pdfUrl: cubit.getLessonsModel!.unlockedLessons[index].pdfUrl,
+                                                      images: '$url/uploads/${cubit.getLessonsModel!.unlockedLessons[index].images[0]}',
+                                                    ),
+                                                    );
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(16),
@@ -99,7 +99,7 @@ class Lectures extends StatelessWidget {
                                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                                 children: [
                                                                   Text(
-                                                                    cubit.getLessonsModel[index].title,
+                                                                    cubit.getLessonsModel!.unlockedLessons[index].title,
                                                                     style: TextStyle(
                                                                       fontSize: 14,
                                                                       color: Colors.white,
@@ -114,7 +114,7 @@ class Lectures extends StatelessWidget {
                                                                 children: [
                                                                   Expanded(
                                                                     child: Text(
-                                                                      cubit.getLessonsModel[index].description,
+                                                                      cubit.getLessonsModel!.unlockedLessons[index].description,
                                                                       style: TextStyle(
                                                                         fontSize: 14,
                                                                         color: Colors.white70,
@@ -145,7 +145,7 @@ class Lectures extends StatelessWidget {
                                                       ],
                                                     ),
                                                   )
-                                                ),
+                                                ):Container(),
                                               );
                                             });
                                       },

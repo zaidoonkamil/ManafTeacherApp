@@ -253,23 +253,23 @@ class HomeAdmin extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                   child: ConditionalBuilder(
-                                      condition: cubit.getLessonsModel.isNotEmpty,
+                                      condition: cubit.getLessonsModelAdmin.isNotEmpty,
                                       builder: (c){
                                     return ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount: cubit.getLessonsModel.length,
+                                      itemCount: cubit.getLessonsModelAdmin.length,
                                       itemBuilder: (context, index) {
                                         return Column(
                                           children: [
                                             GestureDetector(
                                               onTap:(){
                                                 navigateTo(context, Lessons(
-                                                    videoUrl: cubit.getLessonsModel[index].videoUrl,
-                                                    title: cubit.getLessonsModel[index].title,
-                                                    description: cubit.getLessonsModel[index].description,
-                                                    pdfUrl: cubit.getLessonsModel[index].pdfUrl,
-                                                    images: '$url/uploads/${cubit.getLessonsModel[index].images[0]}'));
+                                                    videoUrl: cubit.getLessonsModelAdmin[index].videoUrl,
+                                                    title: cubit.getLessonsModelAdmin[index].title,
+                                                    description: cubit.getLessonsModelAdmin[index].description,
+                                                    pdfUrl: cubit.getLessonsModelAdmin[index].pdfUrl,
+                                                    images: '$url/uploads/${cubit.getLessonsModelAdmin[index].images[0]}'));
                                               },
                                               child: Container(
                                                 width: double.maxFinite,
@@ -290,7 +290,7 @@ class HomeAdmin extends StatelessWidget {
                                                           topRight: Radius.circular(8),
                                                       ),
                                                       child: Image.network(
-                                                        '$url/uploads/${cubit.getLessonsModel[index].images[0]}',
+                                                        '$url/uploads/${cubit.getLessonsModelAdmin[index].images[0]}',
                                                         height: 130,
                                                         width: double.maxFinite,
                                                         fit: BoxFit.fill,
@@ -305,7 +305,7 @@ class HomeAdmin extends StatelessWidget {
                                                             mainAxisAlignment: MainAxisAlignment.end,
                                                             children: [
                                                               Text(
-                                                                cubit.getLessonsModel[index].title.toString(),
+                                                                cubit.getLessonsModelAdmin[index].title.toString(),
                                                                 style: TextStyle(
                                                                   fontWeight: FontWeight.bold,
                                                                   fontSize: 16,
@@ -322,7 +322,7 @@ class HomeAdmin extends StatelessWidget {
                                                             children: [
                                                               Expanded(
                                                                 child: Text(
-                                                                  cubit.getLessonsModel[index].description.toString(),
+                                                                  cubit.getLessonsModelAdmin[index].description.toString(),
                                                                   style: TextStyle(
                                                                     fontWeight: FontWeight.bold,
                                                                     fontSize: 14,
@@ -344,7 +344,7 @@ class HomeAdmin extends StatelessWidget {
                                                       child: GestureDetector(
                                                         onTap: (){
                                                           cubit.deleteLessons(
-                                                              id: cubit.getLessonsModel[index].id.toString(),
+                                                              id: cubit.getLessonsModelAdmin[index].id.toString(),
                                                               context: context);
                                                         },
                                                         child: Container(
@@ -359,33 +359,6 @@ class HomeAdmin extends StatelessWidget {
                                                       ),
                                                     ),
                                                     SizedBox(height: 8),
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            cubit.getLessonsModel[index].isLocked ? '🔒 مقفول' : '🔓 مفتوح',
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                          Switch(
-                                                            value: cubit.getLessonsModel[index].isLocked,
-                                                            onChanged: (value) {
-                                                              cubit.updateLock(
-                                                                context: context,
-                                                                isLocked: value,
-                                                                id: cubit.getLessonsModel[index].id.toString(),
-                                                              );
-                                                              print( cubit.getLessonsModel[index].id.toString());
-                                                              cubit.getLessonsModel[index].isLocked = value;
-                                                            },
-                                                            activeColor: Colors.green,
-                                                            inactiveThumbColor: Colors.red,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-
                                                   ],
                                                 ),
                                               ),

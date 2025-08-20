@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/ navigation/navigation.dart';
+import '../../../../core/network/remote/dio_helper.dart';
 import '../../../../core/styles/themes.dart';
 import '../../../../core/widgets/background.dart';
 import '../../cubit/cubit.dart';
@@ -28,7 +29,7 @@ class DetailsPerson extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AdminCubit(),
+      create: (BuildContext context) => AdminCubit()..getLessonsUserLock(context: context, userId: id,),
       child: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -111,6 +112,121 @@ class DetailsPerson extends StatelessWidget {
                               ),
                             ],
                           ),
+                        ),
+                        ConditionalBuilder(
+                            condition: cubit.getLessonsModel != null,
+                            builder: (c){
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: cubit.getLessonsModel!.unlockedLessons.length,
+                                itemBuilder: (context, index) {
+                                  final lesson = cubit.getLessonsModel!.unlockedLessons[index];
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.8,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: primaryColor,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 1.5,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                              child: Image.network(
+                                                '$url/uploads/${lesson.images[0]}',
+                                                height: 140,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        lesson.title,
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 16,
+                                                          color: Colors.white,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        textAlign: TextAlign.end,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          lesson.description,
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 14,
+                                                            color: Colors.white70,
+                                                          ),
+                                                          maxLines: 3,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          textAlign: TextAlign.end,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    cubit.getLessonsModel!.unlockedLessons[index].isLocked ? '🔒 مقفول' : '🔓 مفتوح',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  Switch(
+                                                    value: cubit.getLessonsModel!.unlockedLessons[index].isLocked,
+                                                    onChanged: (value) {
+                                                      cubit.updateLock(
+                                                        context: context,
+                                                        isLocked: value,
+                                                        lessonsId: cubit.getLessonsModel!.unlockedLessons[index].id.toString(),
+                                                        userId: id,
+                                                      );
+                                                      cubit.getLessonsModel!.unlockedLessons[index].isLocked = value;
+                                                    },
+                                                    activeColor: Colors.green,
+                                                    inactiveThumbColor: Colors.red,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10,)
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            fallback: (c)=>Container()
                         ),
                       ],
                     ),

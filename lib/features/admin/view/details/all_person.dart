@@ -85,7 +85,7 @@ class AllPerson extends StatelessWidget {
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                                            height: 75,
+                                            height: 85,
                                             width: double.infinity,
                                             decoration: BoxDecoration(
                                               borderRadius:

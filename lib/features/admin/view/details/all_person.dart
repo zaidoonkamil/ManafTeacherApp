@@ -5,12 +5,15 @@ import 'package:manaf_teacher/core/styles/themes.dart';
 
 import '../../../../core/ navigation/navigation.dart';
 import '../../../../core/widgets/background.dart';
+import '../../../../core/widgets/custom_text_field.dart';
 import '../../cubit/cubit.dart';
 import '../../cubit/states.dart';
 import 'details_person.dart';
 
 class AllPerson extends StatelessWidget {
   const AllPerson({super.key});
+
+  static TextEditingController userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,6 @@ class AllPerson extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AdminCubit.get(context);
-
           return SafeArea(
             child: Scaffold(
               body: Stack(
@@ -51,6 +53,39 @@ class AllPerson extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                if(userNameController.text.trim().isNotEmpty){
+                                  cubit.getSearchForUser(context: context, userName: userNameController.text.trim());
+                                }else{
+                                  cubit.getNameUser(context: context, page: '1');
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(13.0),
+                                  child: Text('بحث',style: TextStyle(color: primaryColor),),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 6,),
+                            Expanded(
+                              child: CustomTextField(
+                                hintText: 'الاسم',
+                                controller: userNameController,
+                                prefixIcon: Icons.person,
+                                keyboardType: TextInputType.text,
                               ),
                             ),
                           ],

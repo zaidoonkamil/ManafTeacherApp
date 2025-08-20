@@ -460,6 +460,29 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+  void getSearchForUser({required BuildContext? context, required String userName}) {
+    emit(GetNameUserLoadingState());
+    DioHelper.getData(
+      url: '/search-users?name=$userName',
+    ).then((value) {
+      user.clear();
+      List<dynamic> data = value.data;
+      user = data.map((json) => User.fromJson(json)).toList();
+      emit(GetNameUserSuccessState());
+    }).catchError((error) {
+      if (error is DioError) {
+        showToastError(
+          text: error.toString(),
+          context: context!,
+        );
+        emit(GetNameUserErrorState());
+      } else {
+        print("Unknown Error: $error");
+      }
+    });
+  }
+
+
   void deleteUser({required String id,required BuildContext context}) {
     emit(DeleteUserLoadingState());
     DioHelper.deleteData(

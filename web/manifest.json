@@ -1,11 +1,11 @@
 {
-    "name": "manaf_teacher",
-    "short_name": "manaf_teacher",
+    "name": "اكاديمية الاستاذ مناف الكريطي",
+    "short_name": "اكاديمية الاستاذ مناف الكريطي",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "اكاديمية الاستاذ مناف الكريطي",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

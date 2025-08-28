@@ -34,7 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   youtube_player_iframe: ^5.2.1
   dio:
-  shared_preferences:
+  shared_preferences: ^2.5.1
   flutter_bloc:
   bloc:
   flutter_onboard:

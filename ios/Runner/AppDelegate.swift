@@ -24,6 +24,11 @@ import UIKit
       }
     }
 
+    OneSignal.initialize("86528530-6a6a-4c24-86f6-51bfd7e2099d", withLaunchOptions: launchOptions)
+    OneSignal.Notifications.requestPermission({ accepted in
+        print("User accepted notifications: \(accepted)")
+    }, fallbackToSettings: true)
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

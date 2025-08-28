@@ -1,19 +1,25 @@
 workflows:
   ios-release:
     name: Build iOS Release
-    max_build_duration: 60
+    max_build_duration: 120
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
       vars:
         BUNDLE_ID: "com.napol.manaf_teacher"
+        APP_STORE_CONNECT_API_KEY: Encrypted(<your_api_key>)
     scripts:
       - name: Flutter packages get
         script: flutter pub get
 
-      - name: Build iOS IPA
-        script: flutter build ipa --release --no-codesign
+      - name: Build IPA with signing
+        script: flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
+
+    publishing:
+      app_store_connect:
+        api_key_path: $APP_STORE_CONNECT_API_KEY
+        app_id: <your_app_id>
